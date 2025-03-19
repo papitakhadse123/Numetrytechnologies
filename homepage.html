@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sweet Scoops - Ice Cream Shop</title>
+    
+    <!-- React and ReactDOM -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        :root {
+            --primary-color: #ff6b6b;
+            --secondary-color: #4ecdc4;
+            --accent-color: #ffe66d;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background: white;
+            padding: 1rem 2rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #333;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .menu-button {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--primary-color);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)),
+                        url('https://images.unsplash.com/photo-1501443762994-82bd5dace89a?ixlib=rb-4.0.3');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            padding: 0 20px;
+            margin-top: 60px;
+        }
+
+        .hero-content {
+            max-width: 800px;
+        }
+
+        .hero-content h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero-content p {
+            font-size: 1.4rem;
+            margin-bottom: 2rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .cta-button {
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: transform 0.3s, background-color 0.3s;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+            background-color: #ff5252;
+        }
+
+        /* Flavors Section */
+        .flavors {
+            padding: 5rem 2rem;
+            background-color: #fff5f5;
+        }
+
+        .flavors h2 {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 2.5rem;
+            color: #333;
+        }
+
+        .flavors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .flavor-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .flavor-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .flavor-icon {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .flavor-card h3 {
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .flavor-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .price {
+            font-size: 1.25rem;
+            color: var(--primary-color);
+            font-weight: bold;
+            margin-top: 1rem;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: #333;
+            color: white;
+            padding: 3rem 2rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            color: var(--accent-color);
+        }
+
+        .footer-section p {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-links a {
+            color: white;
+            font-size: 1.5rem;
+            transition: color 0.3s;
+        }
+
+        .social-links a:hover {
+            color: var(--accent-color);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .menu-button {
+                display: block;
+            }
+
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                padding: 1rem;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-content p {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        function Navbar() {
+            const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+
+            return (
+                <nav className="navbar">
+                    <div className="nav-content">
+                        <div className="nav-brand">🍦 Sweet Scoops</div>
+                        <button className="menu-button" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+                            <i className="fas fa-bars"></i>
+                        </button>
+                        <ul className={`nav-links ${isMenuOpen ? 'active' : ''}`}>
+                            <li><a href="#home">Home</a></li>
+                            <li><a href="#flavors">Flavors</a></li>
+                            <li><a href="#locations">Locations</a></li>
+                            <li><a href="#contact">Contact</a></li>
+                        </ul>
+                    </div>
+                </nav>
+            );
+        }
+
+        function Hero() {
+            return (
+                <section className="hero">
+                    <div className="hero-content">
+                        <h1>Delicious Ice Cream</h1>
+                        <p>Handcrafted with love, served with a smile</p>
+                        <button className="cta-button">View Our Flavors</button>
+                    </div>
+                </section>
+            );
+        }
+
+        function Flavors() {
+            return (
+                <section className="flavors" id="flavors">
+                    <h2>Popular Flavors</h2>
+                    <div className="flavors-grid">
+                        <div className="flavor-card">
+                            <i className="fas fa-ice-cream flavor-icon"></i>
+                            <h3>Vanilla Bean</h3>
+                            <p>Rich and creamy Madagascar vanilla beans</p>
+                            <div className="price">$3.99</div>
+                        </div>
+                        <div className="flavor-card">
+                            <i className="fas fa-ice-cream flavor-icon"></i>
+                            <h3>Chocolate Fudge</h3>
+                            <p>Double chocolate with fudge swirls</p>
+                            <div className="price">$4.49</div>
+                        </div>
+                        <div className="flavor-card">
+                            <i className="fas fa-ice-cream flavor-icon"></i>
+                            <h3>Strawberry Fields</h3>
+                            <p>Fresh strawberries in creamy ice cream</p>
+                            <div className="price">$4.29</div>
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        function Footer() {
+            return (
+                <footer className="footer">
+                    <div className="footer-content">
+                        <div className="footer-section">
+                            <h3>Sweet Scoops</h3>
+                            <p>Serving happiness one scoop at a time since 1995.</p>
+                            <div className="social-links">
+                                <a href="#"><i className="fab fa-facebook"></i></a>
+                                <a href="#"><i className="fab fa-instagram"></i></a>
+                                <a href="#"><i className="fab fa-twitter"></i></a>
+                                <a href="#"><i className="fab fa-tiktok"></i></a>
+                            </div>
+                        </div>
+                        <div className="footer-section">
+                            <h3>Visit Us</h3>
+                            <p>123 Ice Cream Lane</p>
+                            <p>Sweet City, SC 12345</p>
+                            <p>Phone: (123) 456-7890</p>
+                        </div>
+                        <div className="footer-section">
+                            <h3>Hours</h3>
+                            <p>Monday - Thursday: 11am - 10pm</p>
+                            <p>Friday - Saturday: 11am - 11pm</p>
+                            <p>Sunday: 12pm - 9pm</p>
+                        </div>
+                    </div>
+                    <div className="footer-bottom">
+                        <p>&copy; {new Date().getFullYear()} Sweet Scoops. All rights reserved.</p>
+                    </div>
+                </footer>
+            );
+        }
+
+        function App() {
+            return (
+                <div>
+                    <Navbar />
+                    <Hero />
+                    <Flavors />
+                    <Footer />
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
