@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Phone Auth</title>
+    
+    <!-- Update Firebase SDK versions -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    
+    <style>
+        #phone-sign-in {
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        input, button {
+            margin: 10px 0;
+            padding: 8px;
+            width: 100%;
+        }
+        #recaptcha-container {
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="phone-sign-in">
+        <h1>Phone Sign-In</h1>
+        <input type="text" id="phone-number" placeholder="Enter phone number (e.g., +919096839905)" />
+        <div id="recaptcha-container"></div>
+        <button id="send-code">Send Code</button>
+        <div id="verification-code-container" style="display: none;">
+            <input type="text" id="verification-code" placeholder="Enter verification code" />
+            <button id="verify-code">Verify Code</button>
+        </div>
+        <div id="message"></div>
+    </div>
+
+    <script>
+        // Your Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBm3G-PVCKRotrSeSqJIqjyHczsdQ9UJBE",
+            authDomain: "mobile-clone-c05d5.firebaseapp.com",
+            projectId: "mobile-clone-c05d5",
+            storageBucket: "mobile-clone-c05d5.firebasestorage.app",
+            messagingSenderId: "998353325774",
+            appId: "1:998353325774:web:385ff91c36c3e486f38a9f"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        // Create RecaptchaVerifier before any authentication attempts
+        window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+            'size': 'normal',
+            'callback': (response) => {
+                // reCAPTCHA solved, allow signInWithPhoneNumber.
+                console.log('reCAPTCHA solved');
+                document.getElementById('send-code').disabled = false;
+            },
+            'expired-callback': () => {
+                // Response expired. Ask user to solve reCAPTCHA again.
+                console.log('reCAPTCHA expired');
+                document.getElementById('send-code').disabled = true;
+            }
+        });
+
+        // Render the reCAPTCHA widget
+        window.recaptchaVerifier.render().then(function(widgetId) {
+            window.recaptchaWidgetId = widgetId;
+        });
+
+        document.getElementById('send-code').addEventListener('click', function() {
+            // Disable the button to prevent multiple clicks
+            this.disabled = true;
+            
+            let phoneNumber = document.getElementById('phone-number').value;
+            console.log('Attempting to send code to:', phoneNumber);
+
+            firebase.auth().signInWithPhoneNumber(phoneNumber, window.recaptchaVerifier)
+                .then((confirmationResult) => {
+                    // SMS sent. Prompt user to type the code from the message
+                    window.confirmationResult = confirmationResult;
+                    document.getElementById('verification-code-container').style.display = 'block';
+                    document.getElementById('message').innerText = 'Code sent successfully!';
+                    console.log('SMS sent successfully');
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    document.getElementById('message').innerText = `Error: ${error.message}`;
+                    // Reset reCAPTCHA
+                    grecaptcha.reset(window.recaptchaWidgetId);
+                    // Re-enable the send button
+                    this.disabled = false;
+                });
+        });
+
+        document.getElementById('verify-code').addEventListener('click', function() {
+            const code = document.getElementById('verification-code').value;
+            
+            window.confirmationResult.confirm(code)
+                .then((result) => {
+                    // User signed in successfully
+                    const user = result.user;
+                    document.getElementById('message').innerText = 'Successfully signed in: ' + user.phoneNumber;
+                    console.log('User signed in successfully');
+                })
+                .catch((error) => {
+                    // User couldn't sign in (bad verification code?)
+                    console.error('Error:', error);
+                    document.getElementById('message').innerText = `Error: ${error.message}`;
+                });
+        });
+    </script>
+</body>
+</html>
