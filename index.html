@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> React Navbar</title>
+    <!-- Add Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #333;
+            --secondary-color: #00ff9d;
+            --text-color: #fff;
+            --background-color: #fff;
+        }
+
+        .dark-mode {
+            --primary-color: #fff;
+            --secondary-color: #00ff9d;
+            --text-color: #333;
+            --background-color: #333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--background-color);
+            transition: background-color 0.3s;
+        }
+
+        .navbar {
+            background: var(--primary-color);
+            padding: 1rem 2rem;
+            color: var(--text-color);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--text-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--text-color);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: var(--secondary-color);
+        }
+
+        /* Dropdown styles */
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: var(--primary-color);
+            min-width: 200px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            border-radius: 5px;
+            padding: 0.5rem 0;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+
+        .dropdown-content a {
+            color: var(--text-color);
+            text-decoration: none;
+            display: block;
+            padding: 0.5rem 1rem;
+        }
+
+        .dropdown-content a:hover {
+            background: var(--secondary-color);
+            color: var(--primary-color);
+        }
+
+        /* Search bar styles */
+        .search-container {
+            display: flex;
+            align-items: center;
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 0.5rem 1rem;
+            margin: 0 1rem;
+        }
+
+        .search-input {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            outline: none;
+            padding: 0 0.5rem;
+            width: 200px;
+        }
+
+        .search-input::placeholder {
+            color: rgba(255,255,255,0.7);
+        }
+
+        /* Button styles */
+        .btn {
+            background: var(--secondary-color);
+            color: var(--primary-color);
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 10px rgba(0,255,157,0.3);
+        }
+
+        /* Dark mode toggle */
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 0.5rem;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Mobile styles */
+        @media (max-width: 768px) {
+            .nav-content {
+                flex-wrap: wrap;
+            }
+
+            .search-container {
+                order: 3;
+                width: 100%;
+                margin: 1rem 0;
+            }
+
+            .search-input {
+                width: 100%;
+            }
+
+            .nav-links {
+                display: none;
+                width: 100%;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .nav-links.active {
+                display: flex;
+                animation: fadeIn 0.3s;
+            }
+
+            .dropdown-content {
+                position: static;
+                box-shadow: none;
+                padding-left: 2rem;
+            }
+
+            .hamburger {
+                display: block;
+            }
+        }
+
+        .main-content {
+            margin-top: 80px;
+            padding: 2rem;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+        }
+
+        .main-content h1 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .main-content p {
+            color: var(--primary-color);
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    
+    <script type="text/babel">
+        const Navbar = () => {
+            const [isOpen, setIsOpen] = React.useState(false);
+            const [isDarkMode, setIsDarkMode] = React.useState(false);
+            const [searchTerm, setSearchTerm] = React.useState('');
+
+            const toggleMenu = () => {
+                setIsOpen(!isOpen);
+            };
+
+            const toggleDarkMode = () => {
+                setIsDarkMode(!isDarkMode);
+                document.body.classList.toggle('dark-mode');
+            };
+
+            const handleSearch = (e) => {
+                setSearchTerm(e.target.value);
+                // Add your search logic here
+            };
+
+            return (
+                <nav className="navbar">
+                    <div className="nav-content">
+                        <a href="/" className="logo">
+                            <i className="fas fa-code"></i>
+                            ReactNav
+                        </a>
+
+                        <div className="search-container">
+                            <i className="fas fa-search"></i>
+                            <input 
+                                type="text"
+                                className="search-input"
+                                placeholder="Search..."
+                                value={searchTerm}
+                                onChange={handleSearch}
+                            />
+                        </div>
+
+                        <button className="theme-toggle" onClick={toggleDarkMode}>
+                            <i className={`fas fa-${isDarkMode ? 'sun' : 'moon'}`}></i>
+                        </button>
+
+                        <ul className={`nav-links ${isOpen ? 'active' : ''}`}>
+                            <li><a href="/" className="nav-link">Home</a></li>
+                            <li className="dropdown">
+                                <a href="#" className="nav-link">
+                                    Services <i className="fas fa-chevron-down"></i>
+                                </a>
+                                <div className="dropdown-content">
+                                    <a href="#">Web Development</a>
+                                    <a href="#">Mobile Apps</a>
+                                    <a href="#">Cloud Services</a>
+                                </div>
+                            </li>
+                            <li><a href="/about" className="nav-link">About</a></li>
+                            <li><a href="/contact" className="nav-link">Contact</a></li>
+                            <li><a href="/login" className="btn">Login</a></li>
+                        </ul>
+                    </div>
+                </nav>
+            );
+        };
+
+        const App = () => {
+            return (
+                <div>
+                    <Navbar />
+                    <main className="main-content">
+                        <h1>Welcome React Navbar</h1>
+                    </main>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
