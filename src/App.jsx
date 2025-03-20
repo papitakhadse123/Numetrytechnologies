@@ -1,35 +1,66 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// src/App.js
+import React, { useState, useEffect } from 'react';
 
 function App() {
-  const [count, setCount] = useState(0)
+    const [notes, setNotes] = useState([]);
+    const [inputValue, setInputValue] = useState('');
+    const [editIndex, setEditIndex] = useState(null);
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    useEffect(() => {
+        const storedNotes = JSON.parse(localStorage.getItem('notes')) || [];
+        setNotes(storedNotes);
+    }, []);
+
+    useEffect(() => {
+        localStorage.setItem('notes', JSON.stringify(notes));
+    }, [notes]);
+
+    const handleAddNote = () => {
+        if (inputValue.trim() === '') return;
+        if (editIndex !== null) {
+            const updatedNotes = notes.map((note, index) => 
+                index === editIndex ? inputValue : note
+            );
+            setNotes(updatedNotes);
+            setEditIndex(null);
+        } else {
+            setNotes([...notes, inputValue]);
+        }
+        setInputValue('');
+    };
+
+    const handleEditNote = (index) => {
+        setInputValue(notes[index]);
+        setEditIndex(index);
+    };
+
+    const handleDeleteNote = (index) => {
+        const updatedNotes = notes.filter((_, i) => i !== index);
+        setNotes(updatedNotes);
+    };
+
+    return (
+        <div>
+            <h1>Note-Taking App</h1>
+            <input 
+                type="text" 
+                value={inputValue} 
+                onChange={(e) => setInputValue(e.target.value)} 
+            />
+            <button onClick={handleAddNote}>
+                {editIndex !== null ? 'Update Note' : 'Add Note'}
+            </button>
+            <ul>
+                {notes.map((note, index) => (
+                    <li key={index}>
+                        {note}
+                        <button onClick={() => handleEditNote(index)}>Edit</button>
+                        <button onClick={() => handleDeleteNote(index)}>Delete</button>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
 }
 
-export default App
+export default App;
