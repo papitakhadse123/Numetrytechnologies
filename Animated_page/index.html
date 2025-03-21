@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Animated Landing Page</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            overflow: hidden;
+            animation: backgroundAnimation 10s infinite alternate ease-in-out;
+            position: relative;
+        }
+        @keyframes backgroundAnimation {
+            0% { background: linear-gradient(135deg, #6e8efb, #a777e3); }
+            100% { background: linear-gradient(135deg, #ff758c, #ff7eb3); }
+        }
+        .container {
+            text-align: center;
+            color: white;
+            animation: fadeIn 2s ease-in-out;
+        }
+        h1 {
+            font-size: 3rem;
+            animation: slideIn 1.5s ease-in-out, textGlow 2s infinite alternate;
+        }
+        p {
+            font-size: 1.2rem;
+            margin-top: 10px;
+            animation: fadeIn 3s ease-in-out;
+        }
+        .btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 24px;
+            font-size: 1.2rem;
+            color: white;
+            background: #ff6b6b;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: transform 0.3s ease, background 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+        .btn:hover {
+            transform: scale(1.2);
+            background: #ff4757;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes textGlow {
+            from { text-shadow: 0 0 10px rgba(255,255,255,0.5); }
+            to { text-shadow: 0 0 20px rgba(255,255,255,1); }
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        .floating-bubbles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+        .bubble {
+            position: absolute;
+            bottom: -50px;
+            width: 30px;
+            height: 30px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            animation: rise 10s infinite ease-in-out;
+        }
+        @keyframes rise {
+            from {
+                transform: translateY(0);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(-100vh);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-bubbles">
+        <div class="bubble" style="left: 10%; animation-duration: 6s; width: 40px; height: 40px;"></div>
+        <div class="bubble" style="left: 30%; animation-duration: 8s; width: 50px; height: 50px;"></div>
+        <div class="bubble" style="left: 50%; animation-duration: 10s; width: 30px; height: 30px;"></div>
+        <div class="bubble" style="left: 70%; animation-duration: 7s; width: 60px; height: 60px;"></div>
+        <div class="bubble" style="left: 90%; animation-duration: 9s; width: 35px; height: 35px;"></div>
+    </div>
+    <div class="container">
+        <h1>Welcome to the Landing Page</h1>
+        <p>Experience a smooth and engaging design.</p>
+        <button class="btn">Get Started</button>
+    </div>
+</body>
+</html>
