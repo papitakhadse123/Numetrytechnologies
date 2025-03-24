@@ -1,0 +1,107 @@
+/* ✨ Animated Background with Color Shifting */
+.faq-background {
+    background: linear-gradient(-45deg, #090979, #00d4ff, #ff007f);
+    background-size: 400% 400%;
+    animation: gradientBG 8s ease infinite;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+  }
+  
+  /* Gradient Animation */
+  @keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  
+  /* 🧊 Glassmorphism FAQ Container */
+  .faq-container {
+    max-width: 700px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(15px);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    transition: transform 0.3s ease;
+  }
+  
+  .faq-container:hover {
+    transform: scale(1.02);
+  }
+  
+  /* 💎 Title with Glow Effect */
+  .faq-title {
+    text-align: center;
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #ffffff;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+  }
+  
+  /* 📜 FAQ Card */
+  .faq-card {
+    border: none;
+    background: rgba(255, 255, 255, 0.12);
+    box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    margin-bottom: 15px;
+    transition: all 0.3s ease-in-out;
+    overflow: hidden;
+  }
+  
+  /* 🚀 Active Question Effect */
+  .faq-card.active {
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.3);
+    transform: scale(1.02);
+  }
+  
+  /* 🎛️ Question Button */
+  .faq-button {
+    width: 100%;
+    background: none;
+    border: none;
+    text-align: left;
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffffff;
+    padding: 12px;
+    transition: 0.3s;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .faq-button:hover {
+    color: #00d4ff;
+    text-shadow: 0px 0px 10px #00d4ff;
+  }
+  
+  /* 📌 Answer Section */
+  .faq-answer {
+    font-size: 16px;
+    color: #ffffff;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.15);
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 0 0 12px 12px;
+    animation: fadeIn 0.5s ease-in-out;
+  }
+  
+  /* 🌀 Smooth Fade-in Animation */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  /* 🌟 Icons */
+  .icon {
+    font-size: 20px;
+    color: #00d4ff;
+  }
+  
